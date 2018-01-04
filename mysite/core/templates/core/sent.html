@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>sent mail List</h2>
+
+  <ul>
+    {% for mail in object_list %}
+      <li>{{ mail.subject }} - {{ mail.fromEmail }} - {{ mail.toEmail }}</li>
+        <p>{{ mail.body }}</p>
+    {% empty %}
+      <li> no mail sent</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
