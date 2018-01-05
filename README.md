@@ -1,5 +1,5 @@
-#Setup
-##Mail queue
+# Setup
+## Mail queue using celery django
 
 **setup.py** add test email and password to generate
 
