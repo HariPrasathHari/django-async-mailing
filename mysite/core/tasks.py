@@ -1,10 +1,12 @@
-from datetime import datetime
 import time
-from django.utils import timezone
 
 from celery import shared_task
-from django.core.mail import send_mail
-from .models import Outbox, SentMail
+from django.core import mail
+from django.core.mail import EmailMultiAlternatives
+from django.utils import timezone
+
+from mysite.core.models import Outbox, SentMail
+
 
 # run this command in the alternative terminal
 # celery -A mysite worker -l info
@@ -14,18 +16,25 @@ from .models import Outbox, SentMail
 def send_some_mail(delay):
     total = 10
     x = 0
-    if  delay==None:
+    connection = mail.get_connection()
+    connection.open()
+
+    if delay is None:
         delay = 0
     for i in range(total):
 
         try:
             qs = Outbox.objects.first()
             try:
-                send_mail(
+                mail1 = EmailMultiAlternatives(
                     subject=qs.subject + str(i),
-                    message=qs.body + str(i),
+                    body=qs.body + str(i),
                     from_email=qs.fromEmail,
-                    recipient_list=[qs.toEmail])
+                    to=[qs.toEmail],
+                    connection=connection
+                )
+                mail1.send()
+
                 x = i
                 SentMail.objects.create(fromEmail=qs.fromEmail, toEmail=qs.toEmail, body=qs.body, subject=qs.subject,
                                 sentTime=timezone.now())
@@ -34,17 +43,22 @@ def send_some_mail(delay):
 
             except Exception as e:
                 print(e)
-                send_mail(
+                mail_err = EmailMultiAlternatives(
                     subject='error' + str(i),
-                    message=str(e) + str(i),
+                    body=str(e) + str(i),
                     from_email=qs.fromEmail,
-                    recipient_list=['hariprasathhari9292@gmail.com'])
+                    to=['hariprasathhari9292@gmail.com'],
+                    connection=connection
+                )
+                mail_err.send()
                 Outbox.objects.create(fromEmail=qs.fromEmail, toEmail=qs.toEmail, body=qs.body, subject=qs.subject,
                             queuedTime=timezone.now())
                 qs.delete()
                 pass
 
         except Exception as e:
-            return '{} Mail sent !\n' + str(e).format(i)
+            connection.close()
+            return '{} Mail sent !\n'.format(x) + str(e)
             pass
-    return '{} Mail sent !\n' + str(e).format(i)
+    connection.close()
+    return '{} Mail sent !\n'.format(x)
