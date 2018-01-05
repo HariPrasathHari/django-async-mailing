@@ -1,10 +1,17 @@
-Installation
-The easiest way to install Celery is using pip:
+#Setup
+##Mail queue
+
+**setup.py** add test email and password to generate
+
+**setting.py** add test email in settings
+
+
+Install Celery using pip:
 ```
 pip install Celery
 ```
 
-Now we have to install RabbitMQ.
+Now install RabbitMQ.
 
 Installing RabbitMQ on Ubuntu 16.04
 To install it on a newer Ubuntu version is very straightforward:
@@ -36,5 +43,3 @@ celery -A mysite worker -l info
 ```
 
 
-**setup.py** add test email
-**setting.py** add email
