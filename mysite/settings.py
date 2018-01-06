@@ -34,7 +34,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'k.a.swetha850@gmail.com'  # your gmail id for testing purpose
-EMAIL_HOST_PASSWORD = 'Aravind#7'  # gmail id password
+EMAIL_HOST_PASSWORD = ''  # gmail id password
 DEFAULT_FROM_EMAIL = 'k.a.swetha850@gmail.com'  # your gmail id for testing purpose
 SERVER_EMAIL = 'k.a.swetha850@gmail.com'  # your gmail id for testing purpose
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -116,3 +116,6 @@ STATIC_URL = '/static/'
 
 
 CELERY_BROKER_URL = 'amqp://localhost'
+
+DELAY = 0
+SEND_LIMIT = 100

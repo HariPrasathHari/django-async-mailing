@@ -6,23 +6,21 @@ from django.core.mail import EmailMultiAlternatives
 from django.utils import timezone
 
 from mysite.core.models import Outbox, SentMail
-
-
 # run this command in the alternative terminal
 # celery -A mysite worker -l info
+from mysite.settings import DELAY, SEND_LIMIT
 
 
 @shared_task
-def send_some_mail(delay):
-    total = 10
+def send_some_mail(delay=DELAY):
+    send_limit = SEND_LIMIT
     x = 0
     connection = mail.get_connection()
     connection.open()
 
     if delay is None:
         delay = 0
-    for i in range(total):
-
+    for i in range(send_limit):
         try:
             qs = Outbox.objects.first()
             try:
