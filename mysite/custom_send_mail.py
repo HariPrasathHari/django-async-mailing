@@ -1,9 +1,12 @@
+import re
+
 from django.utils import timezone
 
 from mysite.core.models import Outbox, EmailCounter
 from mysite.core.tasks import send_some_mail
 from mysite.settings import DELAY
 
+EMAIL_REGEX = re.compile(r"[^@]+@[^@]+\.[^@]+")
 
 def get_celery_worker_status():
     ERROR_KEY = "ERROR"
@@ -42,7 +45,11 @@ def delayed_send_mail(wait_time):
 
 
 def send_custom_mail(subject, body, recipient_list):
-    # todo validate recipient list
+    a = recipient_list.split(',')
+    for email in a:
+        if not EMAIL_REGEX.match(email):
+            print('Not valid email id')
+            raise Exception('Not a valid email id')
     my_mail = ''
     print(subject, body, recipient_list)
     try:

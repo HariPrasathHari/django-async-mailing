@@ -6,7 +6,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.utils import timezone
 
 from mysite.core.models import EmailCounter
-from mysite.core.models import Outbox, SentMail
+from mysite.core.models import Outbox, SentMail, MailError
 # run this command in the alternative terminal
 # celery -A mysite worker -l info
 from mysite.settings import DELAY, SEND_LIMIT
@@ -62,7 +62,14 @@ def send_some_mail(delay=DELAY):
                         to=['hariprasathhari9292@gmail.com'],
                         connection=connection
                     )
-                    # todo logging
+                    MailError.objects.create(
+                        Error=str(e),
+                        fromEmail=qs.fromEmail,
+                        toEmail=qs.toEmail.split(','),
+                        body=qs.body,
+                        subject=qs.subject,
+                        sentTime=timezone.now()
+                    )
                     mail_err.send()
                 except:
                     pass
