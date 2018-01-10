@@ -39,6 +39,7 @@ DEFAULT_FROM_EMAIL = 'k.a.swetha850@gmail.com'  # your gmail id for testing purp
 SERVER_EMAIL = 'k.a.swetha850@gmail.com'  # your gmail id for testing purpose
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 INSTALLED_APPS = [
@@ -47,7 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'django_extensions',
     'mysite.core',
 ]
 

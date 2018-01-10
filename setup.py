@@ -1,10 +1,9 @@
-import string
+import hashlib
 
 from django.utils import timezone
-from django.utils.crypto import get_random_string, random
-import hashlib
-from mysite.core.models import *
+from django.utils.crypto import random
 
+from mysite.core.models import *
 
 N = 10  #set N
 fromEmail = 'k.a.swetha850@gmail.com'   # set email  to be generated
@@ -18,3 +17,8 @@ for i in range(N):
                           queuedTime=timezone.now())
     unique_id = ''
     pass
+
+'''
+
+
+'''
